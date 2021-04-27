@@ -2,13 +2,15 @@
 Chat-bot pengingat tugas dan kuis dengan strategi algoritma String-matching dan reguler expression.
 
 # Tech Stack
-Language: javascript </br>
-Platform: Node </br>
+```
+Language: javascript 
+Platform: Node 
 Framework:
   1. Express
-  2. Reactjs
+  2. Reactjs 
 Database:
   1. Mongodb
+```
 
 # Contributor 
 1. Daniel Mario Reynaldi 13519031
