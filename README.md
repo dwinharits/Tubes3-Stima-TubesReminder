@@ -1,5 +1,5 @@
 # Tubes3-Stima-TubesReminder
-Chat-bot pengingat tugas dan kuis dengan strategi algoritma String-matching dan reguler expression.
+Chat-bot pengingat tugas dan kuis dengan strategi algoritma String-matching dan reguler expression. Chatbot dapat mengingatkan deadline tugas dan kuis sesuai permintaan pengguna, chatbot juga memiliki fitur mencatat tugas dan kuis yang akan datang.
 
 # Tech Stack
 ```
