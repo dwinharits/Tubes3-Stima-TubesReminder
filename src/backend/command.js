@@ -13,35 +13,67 @@ exports.getJenis = (string) => {
             return i+1;
         } 
     }
+    
     return -1;
 }
 
 
 exports.constArgs = (string) => {
     var cmd = ["kuis", "tubes", "tucil",  "ujian", "praktikum"];
+
     var date = string.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
-    var kode = string.match(/[A-Z]{2}[12][12][0-9][0-9]/g);
-    var jenis = cmd[getJenis(string)-1];
+
+    var kode = string.match(/[A-Z]{2}[1234][12][0-9][0-9]/g);
+
+    var jenis = (cmd[this.getJenis(string)-1] ? cmd[this.getJenis(string)-1]: null);
+    
+    var topik = string.match(/[A-Z]{2}[1234][12][0-9][0-9](.*)(?=([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/);
+    
+    if(topik != null){
+        topik = topik[0].replace(/[A-Z]{2}[1234][12][0-9][0-9]/, "");
+        topik = topik.replace(/\s/, '');
+        topik = topik.match(/.+?(?= [padatanggal])/);
+        if(topik != null){
+            topik = topik[0]
+        } else {
+            topik = null;
+        }
+    } else {
+        topik = null;
+    }
+
+    if(kode == null) {
+        kode = [];
+        kode[0] = null;
+    }
+
     if(date == null){
         return {
             jenis: jenis,
             kode: kode[0],
             date1: null,
-            date2: null
+            date2: null,
+            topik: topik
         }
     } else if(Array.isArray(date) && date.length == 1) {
         return {
             jenis: jenis,
             kode: kode[0],
             date1: date[0],
-            date2: null
+            date2: null,
+            topik: topik
         }
     } else {
         return {
             jenis: jenis,
             kode: kode[0],
             date1: date[0],
-            date2: date[1]
+            date2: date[1],
+            topik: topik
         }
     }
 }
+
+var string = "Ada Deadline apa saja";
+var result = this.constArgs(string)
+console.log(result);

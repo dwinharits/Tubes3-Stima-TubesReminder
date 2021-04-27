@@ -1,1 +1,7 @@
 mongodb+srv://dan:FqNmU44AIVoEjeCz@cluster0.1jcsm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+var result = string.match(/[A-Z]{2}[12][12][0-9][0-9](.*)(?=([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/)
+console.log(result[0]);
+var string2 = result[0].replace(/[A-Z]{2}[12][12][0-9][0-9]/, "")
+string2 = string2.replace(/\s/, '');
+console.log(string2)
