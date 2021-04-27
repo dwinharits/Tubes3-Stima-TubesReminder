@@ -41,7 +41,7 @@ function createKMPlist(word) {
 }
 
 // fungsi string matching dengan KMP
-function KMPstringMatching(string1, string2) {
+exports.KMPstringMatching = (string1, string2) =>  {
 /* 
     input: 
     string1 : teks yang pingin jadi tempat nyari pattern (string)
@@ -83,7 +83,7 @@ function KMPstringMatching(string1, string2) {
     }
 
     return retArray;
-}   
+}   ;
 
 function createBadMatchTable(word) {
     var retArray = [];
@@ -156,16 +156,6 @@ ouput :
     return -1;
 }       
 
-/* TESTING */
-var index = BoyerMooreStringMatching("", "ah");
-var array = KMPstringMatching("no", "test");
-
-for(var i = 0; i < array.length; ++i) {
-    console.log(array[i]);
-}
-
-console.log(index);
-console.log("program finished");
 
 
 
