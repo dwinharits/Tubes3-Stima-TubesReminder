@@ -11,8 +11,8 @@ const { ReplSet } = require('mongodb');
 
 router.route('/string').post((req, res) => {
     var string = req.body;
+    string = string.toString();
     string = string.replace(/[?!,.;]/g, "");
-    console.log(string);
     var args = parser.constArgs(string);
     var finalstring = encodeURIComponent(req.body);
 
@@ -77,7 +77,7 @@ router.route('/string').post((req, res) => {
     
     if (!found){
         console.log("Command tidak terdaftar");
-        res.json('Perintah tidak dimengerti');
+        res.send('Perintah tidak dimengerti');
     }
     
 });
@@ -101,7 +101,7 @@ router.route('/add-task').post((req, res) => {
 
     newTask
     .save()
-    .then(() => res.json('New Task added!'))
+    .then(() => res.send('New Task added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -118,7 +118,7 @@ router.route('/update-task').post((req, res) => {
         task.tanggal = context.date1;
         
         task.save()
-        .then(() => res.json("Task updated!"))
+        .then(() => res.send("Task updated!"))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));

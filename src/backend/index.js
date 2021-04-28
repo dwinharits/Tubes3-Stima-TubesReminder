@@ -27,6 +27,9 @@ connection.once('open', () => {
 
 app.use('/chat', taskRoute);
 
+app.get('/ping', (req, res) => {
+    return res.send('pong')
+})
 
 app.get('/', (req, res) => {
     res.send("hello world!");
