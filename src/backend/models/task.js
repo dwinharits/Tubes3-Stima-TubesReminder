@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const taskSchema = new Schema ({
     matkul: {
         type: String,
-        required: true
+        required: false
     },
     jenis: {
         type: String,
-        required: true
+        required: false
     },
     topik: {
         type: String,
-        required: true
+        required: false
     }, 
     tanggal: {
         type: Date,

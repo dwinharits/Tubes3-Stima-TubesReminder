@@ -3,11 +3,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+const taskRoute = require('./routes/task.route');
+
 require('dotenv').config();
 
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
@@ -22,7 +25,7 @@ connection.once('open', () => {
 })
 
 
-
+app.use('/chat', taskRoute);
 
 
 app.get('/', (req, res) => {

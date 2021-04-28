@@ -17,17 +17,17 @@ exports.getJenis = (string) => {
     return -1;
 }
 
-
 exports.constArgs = (string) => {
-    var cmd = ["kuis", "tubes", "tucil",  "ujian", "praktikum"];
 
-    var date = string.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+    var cmd = ["kuis", "tubes", "tucil",  "ujian", "praktikum"];
 
     var kode = string.match(/[A-Z]{2}[1234][12][0-9][0-9]/g);
 
     var jenis = (cmd[this.getJenis(string)-1] ? cmd[this.getJenis(string)-1]: null);
-    
+
     var topik = string.match(/[A-Z]{2}[1234][12][0-9][0-9](.*)(?=([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/);
+
+    var date = string.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
     
     if(topik != null){
         topik = topik[0].replace(/[A-Z]{2}[1234][12][0-9][0-9]/, "");
@@ -59,7 +59,7 @@ exports.constArgs = (string) => {
         return {
             jenis: jenis,
             kode: kode[0],
-            date1: date[0],
+            date1: new Date(date[0]),
             date2: null,
             topik: topik
         }
@@ -67,13 +67,10 @@ exports.constArgs = (string) => {
         return {
             jenis: jenis,
             kode: kode[0],
-            date1: date[0],
-            date2: date[1],
+            date1: new Date(date[0]),
+            date2: new Date(date[1]),
             topik: topik
         }
     }
 }
 
-var string = "Ada Deadline apa saja";
-var result = this.constArgs(string)
-console.log(result);
