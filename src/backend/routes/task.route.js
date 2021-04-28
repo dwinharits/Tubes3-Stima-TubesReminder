@@ -141,9 +141,10 @@ router.route('/del-task').post((req, res) => {
 router.route('/get-n-minggu').get((req, res) => {
     var string = req.query.string;
     var context = parser.constArgs(string);
-
+    console.log(context.jumlah[0]);
     var today = new Date();
-    var n_week = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+    var n_week = new Date(today.getFullYear(), today.getMonth(), today.getDate()+(7*context.jumlah));
+    console.log(n_week);
 
     Task.find({tanggal: {$gte: today, $lt: n_week}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
@@ -164,8 +165,11 @@ router.route('/get-n-minggu').get((req, res) => {
 });
 
 router.route('/get-n-hari').get((req, res) => {
+    var string = req.query.string;
+    var context = parser.constArgs(string);
+
     var today = new Date();
-    var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1);
+    var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+(1*context.jumlah));
 
     Task.find({tanggal: {$gte: today, $lt: n_day}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
@@ -272,6 +276,5 @@ router.route('/get-spec').get((req, res) => {
         }
     })
 });
-
 
 module.exports = router;
