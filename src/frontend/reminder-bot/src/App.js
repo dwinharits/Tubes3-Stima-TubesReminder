@@ -18,7 +18,7 @@ function App() {
   const [input,setInput] = useState("")
   const [isUser,setIsUser] = useState(true) //masih bingung
   const [outputs,setOutputs] = useState([])
-  const [output,setOutput] = useState("hello")
+  const [output,setOutput] = useState(0)
 
   function addInput () {
     setInputs([...inputs, {
@@ -31,6 +31,8 @@ function App() {
       console.log(res.data);
       setOutput(res.data);
     })
+
+    addBot();
   }
 
   const addBot = () => {
@@ -45,8 +47,7 @@ function App() {
 
     if (code === 13) {
       addInput()
-      addBot()
-      setInput("test")
+      setInput("")
     }
   }
 

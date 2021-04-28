@@ -131,11 +131,13 @@ router.route('/del-task').post((req, res) => {
     console.log(data.kode);
 
     Task.findOneAndRemove({matkul: data.kode, jenis: data.jenis}, (err, doc) => {
+        if(!doc){
+            res.send("No task found");
+        }
+
         if(err) { res.status(400).json('Error: ' + err)}
         else {
-            res.status(200).json({
-                msg: "Task deleted!"
-            })
+            res.send("Task deleted!");
         }
     })
 });
@@ -149,6 +151,9 @@ router.route('/get-n-minggu').get((req, res) => {
     console.log(n_week);
 
     Task.find({tanggal: {$gte: today, $lt: n_week}}, (err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
         if(err) {res.json({msg: "Error"})}
         else {
             var json = data;
@@ -174,6 +179,9 @@ router.route('/get-n-hari').get((req, res) => {
     var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+(1*context.jumlah));
 
     Task.find({tanggal: {$gte: today, $lt: n_day}}, (err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
         if(err) {res.json({msg: "Error"})}
         else{
             var json = data;
@@ -196,6 +204,10 @@ router.route('/get-between-date').get((req, res) => {
     var context = parser.constArgs(string);
 
     Task.find({tanggal: {$gte: context.date1, $lt: context.date2}}, (err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
+        
         if(err) {res.json({msg: "No data found!"})}
 
         else {
@@ -216,6 +228,10 @@ router.route('/get-today').get((req, res) => {
     var end = new Date();
     end.setHours(23,59,59,999);
     Task.find({tanggal: {$gte: start, $lt: end}}, (err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
+
         if(err) {res.json({msg: "No data found!"})}
 
         else {
@@ -236,12 +252,16 @@ router.route('/get-today').get((req, res) => {
 
 router.route('/get-all').get((req, res) => {
     Task.find((err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
+
         if(err){
             res.json({msg: "No data found!"})
         }
         else {
             var json = data;
-            var output = "";
+            var output = "Deadline keseluruhan: \n";
             for(var i=0; i< json.length; i++){
                 var obj = json[i];
                 var datestring = JSON.stringify(obj.tanggal);
@@ -260,12 +280,16 @@ router.route('/get-spec').get((req, res) => {
     var context = parser.constArgs(string);
     console.log(context.kode);
     Task.findOne({matkul: context.kode},(err, data) => {
+        if(!data){
+            res.send("Tidak ada deadline tubes");
+        }
+
         if(err){
             res.json({msg: "No data found!"})
         }
         else {
             var json = data;
-            var output = "";
+            var output = "Deadline: \n";
             for(var i=0; i< json.length; i++){
                 var obj = json[i];
                 var datestring = JSON.stringify(obj.tanggal);
