@@ -4,35 +4,49 @@ import axios from "axios";
 //axios.post('http://localhost:4000/chat/string', studentObject)
 //.then(res => console.log(res.data));
 
+let axiosConfig = {
+  headers: {
+      'Content-Type' : 'text/html; charset=UTF-8',
+      'Accept': 'Token',
+      "Access-Control-Allow-Origin": "*",
+  }
+};
+
+
 function App() {
   const [inputs,setInputs] = useState([])
   const [input,setInput] = useState("")
   const [isUser,setIsUser] = useState(true) //masih bingung
   const [outputs,setOutputs] = useState([])
-  const [output,setOutput] = useState("")
+  const [output,setOutput] = useState("hello")
 
   function addInput () {
     setInputs([...inputs, {
       id: inputs.length,
       value: input
     }])
+
+    axios.post('http://localhost:4000/chat/string', input , {headers: {"Content-Type": "text/plain"}})
+    .then((res) => {
+      console.log(res.data);
+      setOutput(res.data);
+    })
   }
 
   const addBot = () => {
     setOutputs([...outputs, {
       id: outputs.length,
-      value: "i am bot"
+      value: output
     }])
   }
 
   const handleClick = async (e) => {
     const code = e.keyCode || e.which;
-    console.log(code);
 
     if (code === 13) {
       addInput()
       addBot()
-      setInput("")
+      setInput("test")
     }
   }
 
