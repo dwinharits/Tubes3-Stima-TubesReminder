@@ -15,6 +15,18 @@
   margin-left: auto;
   margin-right: 0;
 }
+.bot{
+  background-color: rgb(152, 85, 212);
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  border-radius: 10px;
+  text-align: left;
+  margin-top: 10px;
+  padding: 4px;
+  padding-left: 20px;
+  max-width: 300px;
+}
 .chat{
   display: inline-block;
   max-width: 400px;
