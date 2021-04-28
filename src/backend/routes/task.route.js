@@ -7,6 +7,7 @@ const matcher = require('../stringMatchingFunctions');
 let Task = require('../models/task');
 
 const url = require('url');
+const { ReplSet } = require('mongodb');
 
 router.route('/string').post((req, res) => {
     var string = req.body;
@@ -25,16 +26,20 @@ router.route('/string').post((req, res) => {
             console.log("get data n weeks from now");
         } else if (matcher.KMPstringMatching(string, "hari").length != 0 && matcher.KMPstringMatching(string, "depan").length != 0){
             found = true;
+            res.redirect(302, '/chat/get-n-hari?string=' + finalstring);
             console.log("get data n days from now");
         } else if (matcher.KMPstringMatching(string, "hari").length != 0 && matcher.KMPstringMatching(string, "ini").length != 0){
             found = true;
+            res.redirect(302, '/chat/get-today');
             console.log("get data today");
         } else if (matcher.KMPstringMatching(string, "antara").length != 0 && matcher.KMPstringMatching(string, "sampai").length != 0 && args.date1 != null && args.date2 != null){
             console.log("get data from date until date");
             found = true;
+            res.redirect(302, '/chat/get-between-date?string=' + finalstring);
         } else if(matcher.KMPstringMatching(string, "sejauh ini").length != 0 || matcher.KMPstringMatching(string, "sekarang").length != 0){
             console.log("get all data");
             found = true;
+            res.redirect(302, '/chat/get-all');
         }
     }
     
@@ -47,29 +52,33 @@ router.route('/string').post((req, res) => {
     if (!found && (matcher.KMPstringMatching(string, "selesai").length != 0 || matcher.KMPstringMatching(string, "sudah dikerjakan").length != 0)){
         console.log("Delete item from db");
         found = true;
-        res.redirect(301, '/chat/del-task?string=' + finalstring);
+        res.redirect(307, '/chat/del-task?string=' + finalstring);
     } 
     
     if (!found && (matcher.KMPstringMatching(string, "diundur").length != 0 || matcher.KMPstringMatching(string, "diubah").length != 0 || matcher.KMPstringMatching(string, "update").length != 0)){
         console.log("Update data from db");
         found = true;
+        res.redirect(307, '/chat/update-task?string=' + finalstring);
     } 
 
     if (!found && (matcher.KMPstringMatching(string, "tugas").length != 0 || matcher.KMPstringMatching(string, "tucil").length != 0 || matcher.KMPstringMatching(string, "tubes").length != 0) && matcher.KMPstringMatching(string, "kapan").length != 0){
         console.log("Find specific task");
         found = true;
+        res.redirect(301, '/chat/get-spec?string=' + finalstring);
     }
 
     if(!found && (matcher.KMPstringMatching(string, "help").length != 0)){
         console.log("Help menu");
         found = true;
+        res.json('Help');
     }
     
     if (!found){
         console.log("Command tidak terdaftar");
+        res.json('Perintah tidak dimengerti');
     }
     
-})
+});
 
 router.route('/add-task').post((req, res) => {
     var string = req.query.string;
@@ -113,8 +122,6 @@ router.route('/update-task').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
-
 router.route('/del-task').post((req, res) => {
     var string = req.query.string;
     
@@ -131,7 +138,6 @@ router.route('/del-task').post((req, res) => {
     })
 });
 
-
 router.route('/get-n-minggu').get((req, res) => {
     var string = req.query.string;
     var context = parser.constArgs(string);
@@ -142,12 +148,20 @@ router.route('/get-n-minggu').get((req, res) => {
     Task.find({tanggal: {$gte: today, $lt: n_week}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
         else {
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                var datestring = JSON.stringify(obj.tanggal);
+                datestring = datestring.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+                datestring = datestring[0];
+                output +=  datestring + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "\n";
+            }
+            console.log(output);
+            res.send(output);
         }
     })
-})
-
-
+});
 
 router.route('/get-n-hari').get((req, res) => {
     var today = new Date();
@@ -156,11 +170,20 @@ router.route('/get-n-hari').get((req, res) => {
     Task.find({tanggal: {$gte: today, $lt: n_day}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
         else{
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                var datestring = JSON.stringify(obj.tanggal);
+                datestring = datestring.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+                datestring = datestring[0];
+                output +=  datestring + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "\n";
+            }
+            console.log(output);
+            res.send(output);
         }
     })
-})
-
+});
 
 router.route('/get-between-date').get((req, res) => {
     var string = req.query.string;
@@ -170,10 +193,16 @@ router.route('/get-between-date').get((req, res) => {
         if(err) {res.json({msg: "No data found!"})}
 
         else {
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                output += obj.tanggal + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "/n";
+            }
+            res.json(output);
         }
     })
-})
+});
 
 router.route('/get-today').get((req, res) => {
     var start = new Date();
@@ -184,22 +213,41 @@ router.route('/get-today').get((req, res) => {
         if(err) {res.json({msg: "No data found!"})}
 
         else {
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                var datestring = JSON.stringify(obj.tanggal);
+                datestring = datestring.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+                datestring = datestring[0];
+                output +=  datestring + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "\n";
+            }
+            console.log(output);
+            res.send(output);
         }
     })
-})
-
+});
 
 router.route('/get-all').get((req, res) => {
     Task.find((err, data) => {
         if(err){
-            res.json({msh: "No data found!"})
+            res.json({msg: "No data found!"})
         }
         else {
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                var datestring = JSON.stringify(obj.tanggal);
+                datestring = datestring.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+                datestring = datestring[0];
+                output +=  datestring + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "\n";
+            }
+            console.log(output);
+            res.send(output);
         }
     })
-})
+});
 
 router.route('/get-spec').get((req, res) => {
     var string = req.query.string;
@@ -210,10 +258,20 @@ router.route('/get-spec').get((req, res) => {
             res.json({msg: "No data found!"})
         }
         else {
-            res.json(data);
+            var json = data;
+            var output = "";
+            for(var i=0; i< json.length; i++){
+                var obj = json[i];
+                var datestring = JSON.stringify(obj.tanggal);
+                datestring = datestring.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+                datestring = datestring[0];
+                output +=  datestring + "-" + obj.matkul + "-" + obj.jenis + "-" + obj.topik + "\n";
+            }
+            console.log(output);
+            res.send(output);
         }
     })
-})
+});
 
 
 module.exports = router;
