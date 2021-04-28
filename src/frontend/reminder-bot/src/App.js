@@ -27,6 +27,7 @@ function App() {
 
   const handleClick = async (e) => {
     const code = e.keyCode || e.which;
+    console.log(code);
 
     if (code === 13) {
       addInput()

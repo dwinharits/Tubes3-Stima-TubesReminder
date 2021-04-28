@@ -18,3 +18,11 @@ Database:
 3. Aisyah Farras Aqila 13519054
 
 # How To Run
+1. Node_module baik pada frontend maupun backend sudah terinstall maka tidak perlu menginstall dependencies lagi.
+2. Masuk ke folder backend kemudian gunakan command ``` $ npm start ```
+3. Masuk ke folder frontend kemudian gunakan command ``` $ npm start ```
+4. Jika gagal compile artinya ada dependencies yang belum terinstall, untuk menginstall dependencies gunakan command 
+``` $ npm install --save <module> ```
+5. Pastikan port 3000 dan port 4000 tidak terisi karena frontend berjalan pada port 3000 dan backend berjalan pada port 4000
+6. Database yang digunakan adalah Mongodb atlas, semua IP sudah di whitelist artinya semua orang bebas mengakses
+7. Jangan mengubah string koneksi pada index.js di backend

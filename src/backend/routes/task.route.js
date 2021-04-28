@@ -70,7 +70,9 @@ router.route('/string').post((req, res) => {
     if(!found && (matcher.KMPstringMatching(string, "help").length != 0)){
         console.log("Help menu");
         found = true;
-        res.json('Help');
+        var helpString = 
+        "[Fitur] \n1. Menambahkan Task baru \n2. Melihat daftar task \n3. Menandai task yang sudah selesai \n4. Mengupdate deadline task \n[Daftar Kata Penting] \n1. kuis \n2. ujian \n3. tucil \n4. tubes \n5. praktikum \n";
+        res.send(helpString);
     }
     
     if (!found){
@@ -141,9 +143,10 @@ router.route('/del-task').post((req, res) => {
 router.route('/get-n-minggu').get((req, res) => {
     var string = req.query.string;
     var context = parser.constArgs(string);
-
+    console.log(context.jumlah[0]);
     var today = new Date();
-    var n_week = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+    var n_week = new Date(today.getFullYear(), today.getMonth(), today.getDate()+(7*context.jumlah));
+    console.log(n_week);
 
     Task.find({tanggal: {$gte: today, $lt: n_week}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
@@ -164,8 +167,11 @@ router.route('/get-n-minggu').get((req, res) => {
 });
 
 router.route('/get-n-hari').get((req, res) => {
+    var string = req.query.string;
+    var context = parser.constArgs(string);
+
     var today = new Date();
-    var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1);
+    var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+(1*context.jumlah));
 
     Task.find({tanggal: {$gte: today, $lt: n_day}}, (err, data) => {
         if(err) {res.json({msg: "Error"})}
@@ -272,6 +278,5 @@ router.route('/get-spec').get((req, res) => {
         }
     })
 });
-
 
 module.exports = router;
