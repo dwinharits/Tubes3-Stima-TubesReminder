@@ -94,8 +94,23 @@ router.route('/add-task').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update-task').delete((req, res) => {
-    
+router.route('/update-task').post((req, res) => {
+    var string = req.query.string;
+    var context = parser.constArgs(string);
+    console.log(context.kode);
+
+    Task.findOne({matkul: context.kode})
+    .then(task => {
+        console.log(task)
+        task.matkul = context.kode;
+        task.jenis = context.jenis;
+        task.tanggal = context.date1;
+        
+        task.save()
+        .then(() => res.json("Task updated!"))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
@@ -106,7 +121,7 @@ router.route('/del-task').delete((req, res) => {
     var data = parser.constArgs(string);
     console.log(data.kode);
 
-    Task.findOneAndDelete({matkul: data.kode, jenis: data.jenis}, (err, doc) => {
+    Task.findOneAndRemove({matkul: data.kode, jenis: data.jenis}, (err, doc) => {
         if(err) { res.status(400).json('Error: ' + err)}
         else {
             res.status(200).json({
@@ -125,7 +140,7 @@ router.route('/get-n-minggu').get((req, res) => {
     var n_week = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
 
     Task.find({tanggal: {$gte: today, $lt: n_week}}, (err, data) => {
-        if(err) {return res.json({msg: "Error"})}
+        if(err) {res.json({msg: "Error"})}
         else {
             res.json(data);
         }
@@ -139,7 +154,7 @@ router.route('/get-n-hari').get((req, res) => {
     var n_day = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1);
 
     Task.find({tanggal: {$gte: today, $lt: n_day}}, (err, data) => {
-        if(err) {return res.json({msg: "Error"})}
+        if(err) {res.json({msg: "Error"})}
         else{
             res.json(data);
         }
@@ -152,7 +167,7 @@ router.route('/get-between-date').get((req, res) => {
     var context = parser.constArgs(string);
 
     Task.find({tanggal: {$gte: context.date1, $lt: context.date2}}, (err, data) => {
-        if(err) {return res.json({msg: "No data found!"})}
+        if(err) {res.json({msg: "No data found!"})}
 
         else {
             res.json(data);
@@ -166,7 +181,7 @@ router.route('/get-today').get((req, res) => {
     var end = new Date();
     end.setHours(23,59,59,999);
     Task.find({tanggal: {$gte: start, $lt: end}}, (err, data) => {
-        if(err) {return res.json({msg: "No data found!"})}
+        if(err) {res.json({msg: "No data found!"})}
 
         else {
             res.json(data);
@@ -178,7 +193,7 @@ router.route('/get-today').get((req, res) => {
 router.route('/get-all').get((req, res) => {
     Task.find((err, data) => {
         if(err){
-            return res.json({msh: "No data found!"})
+            res.json({msh: "No data found!"})
         }
         else {
             res.json(data);
@@ -192,7 +207,7 @@ router.route('/get-spec').get((req, res) => {
     console.log(context.kode);
     Task.findOne({matkul: context.kode},(err, data) => {
         if(err){
-            return res.json({msg: "No data found!"})
+            res.json({msg: "No data found!"})
         }
         else {
             res.json(data);
