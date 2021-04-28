@@ -5,7 +5,7 @@ import store from "./store";
 
 import Chat from "./components/chat/Chat";
 
-function App() {
+const App = () => {
   return (
     <Provider store = {store}>
       <div className="container">
@@ -13,6 +13,6 @@ function App() {
       </div>
     </Provider>
   );
-}
+};
 
 export default App;
