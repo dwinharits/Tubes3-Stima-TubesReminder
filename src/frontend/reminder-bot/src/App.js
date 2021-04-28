@@ -8,6 +8,8 @@ function App() {
   const [inputs,setInputs] = useState([])
   const [input,setInput] = useState("")
   const [isUser,setIsUser] = useState(true) //masih bingung
+  const [outputs,setOutputs] = useState([])
+  const [output,setOutput] = useState("")
 
   function addInput () {
     setInputs([...inputs, {
@@ -17,8 +19,8 @@ function App() {
   }
 
   const addBot = () => {
-    setInputs([...inputs, {
-      id: inputs.length,
+    setOutputs([...outputs, {
+      id: outputs.length,
       value: "i am bot"
     }])
   }
@@ -28,6 +30,7 @@ function App() {
 
     if (code === 13) {
       addInput()
+      addBot()
       setInput("")
     }
   }
@@ -38,9 +41,15 @@ function App() {
         <h1>Chatbot App</h1>
         <div className="historyContainer">
           {
-            inputs.map(input => (
-              <h2 className="user" key={input.id}>{input.value}</h2> //ini nanti ada conditional classNamenya user atau bot
-            ))
+            inputs.map((input,index) => {
+              const output = outputs[index]
+              return (
+                <div>
+                  <div className="user">{input.value}</div>
+                  <div className="bot">{output.value}</div>
+                </div>
+              )
+            })
           }
         </div>
         <input type="text" onChange={(e) => setInput(e.target.value)} onKeyPress={handleClick} value={input}></input>
