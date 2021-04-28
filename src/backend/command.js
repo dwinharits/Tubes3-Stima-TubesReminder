@@ -28,6 +28,8 @@ exports.constArgs = (string) => {
     var topik = string.match(/[A-Z]{2}[1234][12][0-9][0-9](.*)(?=([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])))/);
 
     var date = string.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
+
+    var range = string.match(/[1-9] \s* [mingguhari]/)
     
     if(topik != null){
         topik = topik[0].replace(/[A-Z]{2}[1234][12][0-9][0-9]/, "");
@@ -53,7 +55,7 @@ exports.constArgs = (string) => {
             kode: kode[0],
             date1: null,
             date2: null,
-            topik: topik
+            topik: topik,
         }
     } else if(Array.isArray(date) && date.length == 1) {
         return {

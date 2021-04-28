@@ -115,7 +115,7 @@ router.route('/update-task').post((req, res) => {
 
 
 
-router.route('/del-task').delete((req, res) => {
+router.route('/del-task').post((req, res) => {
     var string = req.query.string;
     
     var data = parser.constArgs(string);
