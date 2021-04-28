@@ -20,7 +20,7 @@ const Chat = ({chat, userMessage}) => {
         <div className="chat">
             <h1>Chatbot App</h1>
             <div className="historyContainer">
-                {chat.length === 0 ? "" : chat.map((msg) => <div className={msg.type}>{msg.message}</div>)}
+                {chat ? chat.map((msg) => <div className={msg.type}>{msg.message}</div>) : ""}
             </div>
             <input id="chatBox" onChange={(e) => setMessage(e.target.value)} onKeyPress={handleClick} value={message}></input>
         </div>
