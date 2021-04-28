@@ -29,7 +29,7 @@ exports.constArgs = (string) => {
 
     var date = string.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g);
 
-    var range = string.match(/[1-9] \s* [mingguhari]/)
+    var range = string.match(/[1-9][0-9]* \s*(minggu|hari)/);
     
     if(topik != null){
         topik = topik[0].replace(/[A-Z]{2}[1234][12][0-9][0-9]/, "");

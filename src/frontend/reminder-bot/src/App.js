@@ -1,13 +1,25 @@
 import './App.css';
 import React, {useState} from "react";
 
-function App() {
-  const [input,setInput] = useState(null)
-  const [output,setOutput] = useState(false)
 
-  function getInput(input){
-    setInput(input.target.value)
-    setOutput(false)
+function App() {
+  const [inputs,setInputs] = useState([])
+  const [input,setInput] = useState("")
+
+  const addInput = () => {
+    setInputs([...inputs, {
+      id: inputs.length,
+      value: input
+    }])
+  }
+
+  const handleClick = async (e) => {
+    const code = e.keyCode || e.which;
+
+    if (code === 13) {
+      addInput()
+      setInput("")
+    }
   }
 
   return (
@@ -16,12 +28,12 @@ function App() {
         <h1>Chatbot App</h1>
         <div className="historyContainer">
           {
-            output ?
-            <h2 className="user">{input}</h2>
-            : null
+            inputs.map(input => (
+              <h2 className="user" key={input.id}>{input.value}</h2>
+            ))
           }
         </div>
-        <input type="text" onChange={getInput} onKeyPress={() => setOutput(true)}></input>
+        <input type="text" onChange={(e) => setInput(e.target.value)} onKeyPress={handleClick} value={input}></input>
       </div>
     </div>
   );
