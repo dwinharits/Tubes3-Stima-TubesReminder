@@ -8,7 +8,7 @@ import Chat from "./components/chat/Chat";
 function App() {
   return (
     <Provider store = {store}>
-      <div className="App">
+      <div className="container">
         <Chat />
       </div>
     </Provider>

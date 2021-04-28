@@ -19,7 +19,9 @@ const Chat = ({chat, userMessage}) => {
     return (
         <div className="chat">
             <h1>Chatbot App</h1>
-            {chat.length === 0 ? "" : chat.map((msg) => <div className={msg.type}>{msg.message}</div>)}
+            <div className="historyContainer">
+                {chat.length === 0 ? "" : chat.map((msg) => <div className={msg.type}>{msg.message}</div>)}
+            </div>
             <input id="chatBox" onChange={(e) => setMessage(e.target.value)} onKeyPress={handleClick} value={message}></input>
         </div>
     );
