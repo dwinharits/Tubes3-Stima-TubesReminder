@@ -1,17 +1,29 @@
-import React from "react";
 import './App.css';
-import {Provider} from "react-redux";
-import store from "./store";
-
-import Chat from "./components/chat/Chat";
+import React, {useState} from "react";
 
 function App() {
+  const [input,setInput] = useState(null)
+  const [output,setOutput] = useState(false)
+
+  function getInput(input){
+    setInput(input.target.value)
+    setOutput(false)
+  }
+
   return (
-    <Provider store = {store}>
-      <div className="App">
-        <Chat />
+    <div className="container">
+      <div className="chat">
+        <h1>Chatbot App</h1>
+        <div className="historyContainer">
+          {
+            output ?
+            <h2 className="user">{input}</h2>
+            : null
+          }
+        </div>
+        <input type="text" onChange={getInput} onKeyPress={() => setOutput(true)}></input>
       </div>
-    </Provider>
+    </div>
   );
 }
 
