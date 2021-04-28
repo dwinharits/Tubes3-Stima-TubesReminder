@@ -27,7 +27,7 @@ const Chat = ({chat, userMessage}) => {
     );
 };
 const mapStateToProps = (state) => ({
-    chat: state.tubes.messages,
+        chat: state.tubes.messages,
 });
 
 export default connect(mapStateToProps, {userMessage})(Chat);

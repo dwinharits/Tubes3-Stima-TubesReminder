@@ -40,7 +40,7 @@ input{
   max-width: 400px;
 }
 .historyContainer{
-  height:600px;
+  height:400px;
   overflow: scroll;
 }
 h1{
