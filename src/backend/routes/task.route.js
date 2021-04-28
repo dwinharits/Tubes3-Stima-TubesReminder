@@ -70,7 +70,9 @@ router.route('/string').post((req, res) => {
     if(!found && (matcher.KMPstringMatching(string, "help").length != 0)){
         console.log("Help menu");
         found = true;
-        res.json('Help');
+        var helpString = 
+        "[Fitur] \n1. Menambahkan Task baru \n2. Melihat daftar task \n3. Menandai task yang sudah selesai \n4. Mengupdate deadline task \n[Daftar Kata Penting] \n1. kuis \n2. ujian \n3. tucil \n4. tubes \n5. praktikum \n";
+        res.send(helpString);
     }
     
     if (!found){
