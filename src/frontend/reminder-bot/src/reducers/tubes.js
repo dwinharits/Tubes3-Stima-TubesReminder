@@ -10,7 +10,7 @@ export default (state=initialState, action) => {
 
     switch (type) {
         case INPUT_SUCCESS:
-            messages = [...messages, { message: payload, type: "user" }]
+            messages = [...messages, { message: payload, type: "user" }];
             return {
                 state,
                 ...messages,
